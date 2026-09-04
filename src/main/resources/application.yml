@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: tc-service-base
+  profiles:
+    active: local
+
+server:
+  port: 8080
+
+---
+# ── local ──
+spring:
+  config:
+    activate:
+      on-profile: local
+
+logging:
+  level:
+    root: info
+    com.demo.tcservicebase: debug
+
+---
+# ── dev ──
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: info
+    com.demo.tcservicebase: debug
+
+---
+# ── prod ──
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  level:
+    root: warn
