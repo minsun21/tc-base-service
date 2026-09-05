@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- Spring Boot 제공 컨버터(%clr 등)를 쓰려면 반드시 등록해야 함 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
@@ -10,14 +9,13 @@
     <property name="CONSOLE_PATTERN" value="%d{HH:mm:ss.SSS} %clr(%-5level) [%thread] [%X{traceId}] %clr(%logger{36}){cyan} - %msg%n"/>
     <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId}] %-5level %logger{36} - %msg%n"/>
 
-    <!-- 콘솔 출력 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <!-- 전체 로그 파일 (일별 롤링, 단일 파일) -->
+    <!-- 전체 로그 파일 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/tc-service-base.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -30,8 +28,9 @@
         </encoder>
     </appender>
 
-    <!-- 환경별 로깅 전략 -->
     <springProfile name="local">
+        <!-- MyBatis SQL 로그 (Preparing/Parameters 등) -->
+        <logger name="com.demo.tcservicebase.domain" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
@@ -39,6 +38,7 @@
     </springProfile>
 
     <springProfile name="dev,staging">
+        <logger name="com.demo.tcservicebase.domain" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
@@ -46,6 +46,8 @@
     </springProfile>
 
     <springProfile name="prod">
+        <!-- 운영에서는 SQL 로그 끔  -->
+        <logger name="com.demo.tcservicebase.domain" level="WARN"/>
         <root level="WARN">
             <appender-ref ref="FILE"/>
         </root>

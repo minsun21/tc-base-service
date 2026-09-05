@@ -16,12 +16,12 @@ spring:
 
   datasource:
     tc:
-      jdbc-url: jdbc:oracle:thin:@//localhost:1521/tcdb
+      url: jdbc:oracle:thin:@//localhost:1521/tcdb
       username: tc_user
       password: local_password
       driver-class-name: oracle.jdbc.OracleDriver
     erp:
-      jdbc-url: jdbc:oracle:thin:@//localhost:1521/erpdb
+      url: jdbc:oracle:thin:@//localhost:1521/erpdb
       username: erp_user
       password: local_password
       driver-class-name: oracle.jdbc.OracleDriver
@@ -40,12 +40,12 @@ spring:
 
   datasource:
     tc:
-      jdbc-url: jdbc:oracle:thin:@//dev-db-host:1521/tcdb
+      url: jdbc:oracle:thin:@//dev-db-host:1521/tcdb
       username: tc_user
       password: ${TC_DB_PASSWORD}
       driver-class-name: oracle.jdbc.OracleDriver
     erp:
-      jdbc-url: jdbc:oracle:thin:@//dev-db-host:1521/erpdb
+      url: jdbc:oracle:thin:@//dev-db-host:1521/erpdb
       username: erp_user
       password: ${ERP_DB_PASSWORD}
       driver-class-name: oracle.jdbc.OracleDriver
@@ -64,12 +64,12 @@ spring:
 
   datasource:
     tc:
-      jdbc-url: jdbc:oracle:thin:@//prod-db-host:1521/tcdb
+      url: jdbc:oracle:thin:@//prod-db-host:1521/tcdb
       username: tc_user
       password: ${TC_DB_PASSWORD}
       driver-class-name: oracle.jdbc.OracleDriver
     erp:
-      jdbc-url: jdbc:oracle:thin:@//prod-db-host:1521/erpdb
+      url: jdbc:oracle:thin:@//prod-db-host:1521/erpdb
       username: erp_user
       password: ${ERP_DB_PASSWORD}
       driver-class-name: oracle.jdbc.OracleDriver
