@@ -36,11 +36,15 @@ class ExampleTcMapperIntegrationTest {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS item");
-            statement.execute("CREATE TABLE item (item_id VARCHAR(50) PRIMARY KEY, item_name VARCHAR(100))");
-            statement.execute("INSERT INTO item (item_id, item_name) VALUES ('ITEM-0001', '볼트 M8')");
+            statement.execute("CREATE TABLE item ("
+                    + "item_id VARCHAR(50) PRIMARY KEY, item_name VARCHAR(100), item_type VARCHAR(50))");
+            statement.execute("INSERT INTO item (item_id, item_name, item_type) "
+                    + "VALUES ('ITEM-0001', '볼트 M8', 'FASTENER')");
         }
 
         Configuration configuration = new Configuration(new Environment("test", new JdbcTransactionFactory(), dataSource));
+        // 실제 TcDataSourceConfig와 동일하게 스네이크→카멜 자동 매핑을 켜서 findItemDetailById(resultType DTO) 매핑을 검증
+        configuration.setMapUnderscoreToCamelCase(true);
         try (InputStream is = Resources.getResourceAsStream("mapper/tc/ExampleTcMapper.xml")) {
             new XMLMapperBuilder(is, configuration, "mapper/tc/ExampleTcMapper.xml", configuration.getSqlFragments()).parse();
         }
@@ -63,6 +67,28 @@ class ExampleTcMapperIntegrationTest {
             ExampleTcMapper mapper = session.getMapper(ExampleTcMapper.class);
 
             assertThat(mapper.findItemNameById("NO-SUCH-ITEM")).isNull();
+        }
+    }
+
+    @Test
+    void findItemDetailById는_컬럼들을_DTO_필드에_자동매핑해서_반환한다() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ExampleTcMapper mapper = session.getMapper(ExampleTcMapper.class);
+
+            ItemDetail detail = mapper.findItemDetailById("ITEM-0001");
+
+            assertThat(detail.getItemId()).isEqualTo("ITEM-0001");
+            assertThat(detail.getItemName()).isEqualTo("볼트 M8");
+            assertThat(detail.getItemType()).isEqualTo("FASTENER");
+        }
+    }
+
+    @Test
+    void findItemDetailById는_존재하지_않으면_null을_반환한다() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ExampleTcMapper mapper = session.getMapper(ExampleTcMapper.class);
+
+            assertThat(mapper.findItemDetailById("NO-SUCH-ITEM")).isNull();
         }
     }
 }
