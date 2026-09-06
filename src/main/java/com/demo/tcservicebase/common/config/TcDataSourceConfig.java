@@ -1,6 +1,6 @@
 package com.demo.tcservicebase.common.config;
 
-
+import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -43,6 +43,13 @@ public class TcDataSourceConfig {
         factoryBean.setDataSource(tcDataSource);
         factoryBean.setMapperLocations(
                 new PathMatchingResourcePatternResolver().getResources("classpath:mapper/tc/**/*.xml"));
+
+        org.apache.ibatis.session.Configuration mybatisConfig = new org.apache.ibatis.session.Configuration();
+        mybatisConfig.setMapUnderscoreToCamelCase(true);
+        mybatisConfig.setDefaultFetchSize(500);
+        mybatisConfig.setLogImpl(Slf4jImpl.class);
+        factoryBean.setConfiguration(mybatisConfig);
+
         return factoryBean.getObject();
     }
 
