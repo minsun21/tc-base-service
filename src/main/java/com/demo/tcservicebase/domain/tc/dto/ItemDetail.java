@@ -1,4 +1,4 @@
-package com.demo.tcservicebase.domain.tc;
+package com.demo.tcservicebase.domain.tc.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

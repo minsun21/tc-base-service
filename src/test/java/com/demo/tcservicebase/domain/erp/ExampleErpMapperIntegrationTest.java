@@ -1,5 +1,6 @@
 package com.demo.tcservicebase.domain.erp;
 
+import com.demo.tcservicebase.domain.erp.dto.MaterialStockDetail;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.io.Resources;
@@ -35,11 +36,15 @@ class ExampleErpMapperIntegrationTest {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS material_stock");
-            statement.execute("CREATE TABLE material_stock (material_code VARCHAR(50) PRIMARY KEY, stock_qty INT)");
-            statement.execute("INSERT INTO material_stock (material_code, stock_qty) VALUES ('ITEM-0001', 150)");
+            statement.execute("CREATE TABLE material_stock ("
+                    + "material_code VARCHAR(50) PRIMARY KEY, stock_qty INT, warehouse_code VARCHAR(50))");
+            statement.execute("INSERT INTO material_stock (material_code, stock_qty, warehouse_code) "
+                    + "VALUES ('ITEM-0001', 150, 'WH-01')");
         }
 
         Configuration configuration = new Configuration(new Environment("test", new JdbcTransactionFactory(), dataSource));
+        // 실제 ErpDataSourceConfig와 동일하게 스네이크→카멜 자동 매핑을 켜서 findStockDetailByItemCode(resultType DTO) 매핑을 검증
+        configuration.setMapUnderscoreToCamelCase(true);
         try (InputStream is = Resources.getResourceAsStream("mapper/erp/Exampleerpmapper.xml")) {
             new XMLMapperBuilder(is, configuration, "mapper/erp/Exampleerpmapper.xml", configuration.getSqlFragments()).parse();
         }
@@ -62,6 +67,28 @@ class ExampleErpMapperIntegrationTest {
             ExampleErpMapper mapper = session.getMapper(ExampleErpMapper.class);
 
             assertThat(mapper.findStockQuantityByItemCode("NO-SUCH-ITEM")).isNull();
+        }
+    }
+
+    @Test
+    void findStockDetailByItemCode는_컬럼들을_DTO_필드에_자동매핑해서_반환한다() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ExampleErpMapper mapper = session.getMapper(ExampleErpMapper.class);
+
+            MaterialStockDetail detail = mapper.findStockDetailByItemCode("ITEM-0001");
+
+            assertThat(detail.getMaterialCode()).isEqualTo("ITEM-0001");
+            assertThat(detail.getStockQty()).isEqualTo(150);
+            assertThat(detail.getWarehouseCode()).isEqualTo("WH-01");
+        }
+    }
+
+    @Test
+    void findStockDetailByItemCode는_존재하지_않으면_null을_반환한다() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ExampleErpMapper mapper = session.getMapper(ExampleErpMapper.class);
+
+            assertThat(mapper.findStockDetailByItemCode("NO-SUCH-ITEM")).isNull();
         }
     }
 }

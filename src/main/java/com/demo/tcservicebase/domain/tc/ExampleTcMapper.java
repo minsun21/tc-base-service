@@ -1,5 +1,7 @@
 package com.demo.tcservicebase.domain.tc;
 
+import com.demo.tcservicebase.domain.tc.dto.ItemDetail;
+
 public interface ExampleTcMapper {
     String findItemNameById(String itemId);
 

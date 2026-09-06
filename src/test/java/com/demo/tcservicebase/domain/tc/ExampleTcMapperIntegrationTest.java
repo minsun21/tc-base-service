@@ -1,5 +1,6 @@
 package com.demo.tcservicebase.domain.tc;
 
+import com.demo.tcservicebase.domain.tc.dto.ItemDetail;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.io.Resources;

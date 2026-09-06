@@ -10,7 +10,7 @@
 
     <!-- resultType을 DTO로 지정하는 예제. mapUnderscoreToCamelCase=true 설정 덕분에
          item_id/item_name/item_type 컬럼이 별칭 없이도 itemId/itemName/itemType 프로퍼티에 자동 매핑됨 -->
-    <select id="findItemDetailById" resultType="com.demo.tcservicebase.domain.tc.ItemDetail">
+    <select id="findItemDetailById" resultType="com.demo.tcservicebase.domain.tc.dto.ItemDetail">
         SELECT item_id, item_name, item_type
         FROM item
         WHERE item_id = #{itemId}
