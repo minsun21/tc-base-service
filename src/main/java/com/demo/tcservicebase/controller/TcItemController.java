@@ -1,7 +1,7 @@
 package com.demo.tcservicebase.controller;
 
 import com.demo.tcservicebase.common.dto.ApiResponse;
-import com.demo.tcservicebase.dto.ItemCreateRequest;
+import com.demo.tcservicebase.dto.item.ItemCreateRequest;
 import com.demo.tcservicebase.service.TcItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

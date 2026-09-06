@@ -1,4 +1,4 @@
-package com.demo.tcservicebase.dto;
+package com.demo.tcservicebase.dto.item;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
