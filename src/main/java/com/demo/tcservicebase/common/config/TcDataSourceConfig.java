@@ -43,6 +43,7 @@ public class TcDataSourceConfig {
         factoryBean.setDataSource(tcDataSource);
         factoryBean.setMapperLocations(
                 new PathMatchingResourcePatternResolver().getResources("classpath:mapper/tc/**/*.xml"));
+        factoryBean.setTypeAliasesPackage("com.demo.tcservicebase.domain.tc.dto");
 
         org.apache.ibatis.session.Configuration mybatisConfig = new org.apache.ibatis.session.Configuration();
         mybatisConfig.setMapUnderscoreToCamelCase(true);

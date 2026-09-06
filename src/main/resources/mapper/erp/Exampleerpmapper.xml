@@ -8,9 +8,7 @@
         WHERE material_code = #{itemCode}
     </select>
 
-    <!-- resultType을 DTO로 지정하는 예제. mapUnderscoreToCamelCase=true 설정 덕분에
-         material_code/stock_qty/warehouse_code 컬럼이 별칭 없이도 materialCode/stockQty/warehouseCode 프로퍼티에 자동 매핑됨 -->
-    <select id="findStockDetailByItemCode" resultType="com.demo.tcservicebase.domain.erp.dto.MaterialStockDetail">
+    <select id="findStockDetailByItemCode" resultType="MaterialStockDetail">
         SELECT material_code, stock_qty, warehouse_code
         FROM material_stock
         WHERE material_code = #{itemCode}

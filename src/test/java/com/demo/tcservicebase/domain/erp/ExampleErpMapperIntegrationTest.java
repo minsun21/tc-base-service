@@ -45,6 +45,8 @@ class ExampleErpMapperIntegrationTest {
         Configuration configuration = new Configuration(new Environment("test", new JdbcTransactionFactory(), dataSource));
         // 실제 ErpDataSourceConfig와 동일하게 스네이크→카멜 자동 매핑을 켜서 findStockDetailByItemCode(resultType DTO) 매핑을 검증
         configuration.setMapUnderscoreToCamelCase(true);
+        // 실제 ErpDataSourceConfig의 setTypeAliasesPackage와 동일하게 등록해서 resultType="MaterialStockDetail"(단순명)이 풀리도록 함
+        configuration.getTypeAliasRegistry().registerAliases("com.demo.tcservicebase.domain.erp.dto");
         try (InputStream is = Resources.getResourceAsStream("mapper/erp/Exampleerpmapper.xml")) {
             new XMLMapperBuilder(is, configuration, "mapper/erp/Exampleerpmapper.xml", configuration.getSqlFragments()).parse();
         }

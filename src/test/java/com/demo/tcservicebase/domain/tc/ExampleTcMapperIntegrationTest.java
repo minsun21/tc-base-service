@@ -46,6 +46,8 @@ class ExampleTcMapperIntegrationTest {
         Configuration configuration = new Configuration(new Environment("test", new JdbcTransactionFactory(), dataSource));
         // 실제 TcDataSourceConfig와 동일하게 스네이크→카멜 자동 매핑을 켜서 findItemDetailById(resultType DTO) 매핑을 검증
         configuration.setMapUnderscoreToCamelCase(true);
+        // 실제 TcDataSourceConfig의 setTypeAliasesPackage와 동일하게 등록해서 resultType="ItemDetail"(단순명)이 풀리도록 함
+        configuration.getTypeAliasRegistry().registerAliases("com.demo.tcservicebase.domain.tc.dto");
         try (InputStream is = Resources.getResourceAsStream("mapper/tc/ExampleTcMapper.xml")) {
             new XMLMapperBuilder(is, configuration, "mapper/tc/ExampleTcMapper.xml", configuration.getSqlFragments()).parse();
         }

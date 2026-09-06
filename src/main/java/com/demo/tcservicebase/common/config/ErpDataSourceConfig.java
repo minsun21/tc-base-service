@@ -39,6 +39,7 @@ public class ErpDataSourceConfig {
         factoryBean.setDataSource(erpDataSource);
         factoryBean.setMapperLocations(
                 new PathMatchingResourcePatternResolver().getResources("classpath:mapper/erp/**/*.xml"));
+        factoryBean.setTypeAliasesPackage("com.demo.tcservicebase.domain.erp.dto");
 
         org.apache.ibatis.session.Configuration mybatisConfig = new org.apache.ibatis.session.Configuration();
         mybatisConfig.setMapUnderscoreToCamelCase(true);
